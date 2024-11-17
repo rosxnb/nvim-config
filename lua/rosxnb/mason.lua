@@ -16,8 +16,7 @@ function M.config()
         "eslint",
         "yamlls",
         "pyright",
-        "tsserver",
-        "omnisharp",
+        "ts_ls",
     }
 
     require("mason").setup {

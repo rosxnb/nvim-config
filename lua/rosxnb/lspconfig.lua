@@ -29,7 +29,7 @@ local function lsp_keymaps(bufnr)
 	keymap(  bufnr,  "n",  "<leader>lh",  "<cmd>lua require('rosxnb.lspconfig').toggle_inlay_hints()<cr>",  opts  )
 end
 
-M.on_attach = function(client, bufnr)
+M.on_attach = function(_, bufnr)
     lsp_keymaps(bufnr)
 
     -- if client.supports_method "textDocument/inlayHint" then
@@ -62,7 +62,7 @@ function M.config()
         "eslint",
         "yamlls",
         "pyright",
-        "tsserver",
+        "ts_ls",
         "omnisharp",
     }
 
