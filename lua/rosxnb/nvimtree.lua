@@ -33,6 +33,9 @@ function M.config()
     require("nvim-tree").setup {
         hijack_netrw = false,
         sync_root_with_cwd = true,
+        sort = {
+            sorter = "case_sensitive",
+        },
         view = {
             relativenumber = true,
             number = true,
