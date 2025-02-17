@@ -5,6 +5,7 @@ local M = {
 }
 
 function M.config()
+    require ('nvim-treesitter.install').compilers = { 'zig' }
     require("nvim-treesitter.configs").setup {
         ensure_installed = {
             "bash",
@@ -20,12 +21,9 @@ function M.config()
             "python",
             "query",
             "regex",
-            "tsx",
-            "typescript",
             "vim",
             "vimdoc",
             "yaml",
-            "java",
         },
         highlight = {
             enable = true
