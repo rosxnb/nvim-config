@@ -59,11 +59,8 @@ function M.config()
         "jsonls",
         "lua_ls",
         "clangd",
-        "eslint",
         "yamlls",
         "pyright",
-        "ts_ls",
-        "omnisharp",
     }
 
     local default_diagnostic_config = {
