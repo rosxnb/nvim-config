@@ -33,7 +33,7 @@ M.on_attach = function(_, bufnr)
     lsp_keymaps(bufnr)
 
     -- if client.supports_method "textDocument/inlayHint" then
-    vim.lsp.inlay_hint.enable(false, { bufnr })
+    vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
     -- end
 end
 
@@ -45,11 +45,11 @@ end
 
 M.toggle_inlay_hints = function()
     local bufnr = vim.api.nvim_get_current_buf()
-    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr }), { bufnr} )
+    local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
+    vim.lsp.inlay_hint.enable(not enabled, { bufnr = bufnr })
 end
 
 function M.config()
-    local lspconfig = require "lspconfig"
     local icons = require "rosxnb.icons"
 
     local servers = {
@@ -68,13 +68,19 @@ function M.config()
 
     local default_diagnostic_config = {
         signs = {
-            active = true,
-            values = {
-                { name = "DiagnosticSignError", text = icons.diagnostics.Error },
-                { name = "DiagnosticSignWarn", text = icons.diagnostics.Warning },
-                { name = "DiagnosticSignHint", text = icons.diagnostics.Hint },
-                { name = "DiagnosticSignInfo", text = icons.diagnostics.Information },
+            text = {
+                [vim.diagnostic.severity.ERROR] = icons.diagnostics.Error,
+                [vim.diagnostic.severity.WARN]  = icons.diagnostics.Warning,
+                [vim.diagnostic.severity.HINT]  = icons.diagnostics.Hint,
+                [vim.diagnostic.severity.INFO]  = icons.diagnostics.Information,
             },
+            -- Optional: if you want number column highlighting too:
+            -- numhl = {
+                --   [vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
+                --   [vim.diagnostic.severity.WARN]  = "DiagnosticSignWarn",
+                --   [vim.diagnostic.severity.HINT]  = "DiagnosticSignHint",
+                --   [vim.diagnostic.severity.INFO]  = "DiagnosticSignInfo",
+                -- },
         },
         virtual_text = false,
         update_in_insert = false,
@@ -91,10 +97,6 @@ function M.config()
     }
 
     vim.diagnostic.config(default_diagnostic_config)
-
-    for _, sign in ipairs(vim.tbl_get(vim.diagnostic.config(), "signs", "values") or {}) do
-        vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = sign.name })
-    end
 
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
     vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
@@ -115,8 +117,10 @@ function M.config()
             require("neodev").setup {}
         end
 
-        lspconfig[server].setup(opts)
+        vim.lsp.config(server, opts)
     end
+
+    vim.lsp.enable(servers)
 end
 
 return M
