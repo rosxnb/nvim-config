@@ -11,6 +11,7 @@ function M.config()
             "html",
             "c",
             "cpp",
+            "objc",
             "javascript",
             "json",
             "lua",
