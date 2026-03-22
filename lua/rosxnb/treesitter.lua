@@ -2,10 +2,7 @@ local M = {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
-}
-
-function M.config()
-    require("nvim-treesitter.configs").setup {
+    opts = {
         ensure_installed = {
             "bash",
             "html",
@@ -28,10 +25,7 @@ function M.config()
             "yaml",
             "java",
         },
-        highlight = {
-            enable = true
-        },
     }
-end
+}
 
 return M
