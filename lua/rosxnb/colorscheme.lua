@@ -47,6 +47,18 @@ function M.config()
     })
 
     vim.cmd.colorscheme "catppuccin"
+
+    vim.api.nvim_create_user_command("LightMode", function()
+        require("catppuccin").setup({ transparent_background = false })
+        vim.opt.background = "light"
+        vim.cmd.colorscheme "catppuccin"
+    end, {})
+
+    vim.api.nvim_create_user_command("DarkMode", function()
+        require("catppuccin").setup({ transparent_background = true })
+        vim.opt.background = "dark"
+        vim.cmd.colorscheme "catppuccin"
+    end, {})
 end
 
 return M
